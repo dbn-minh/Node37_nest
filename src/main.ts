@@ -14,3 +14,17 @@ bootstrap();
 // prettier
 
 // main => module => controller => service
+
+// Controller: Định nghĩa API
+// Service: Định nghĩa chức năng, tính toán, ...
+
+// endpoint
+// localhost:8080/demo
+
+// User
+// nest g module [tên module]
+// nest g controller [tên module] --no-spec
+// nest g service [tên module]
+
+// nest g resource [name]
+// Auth

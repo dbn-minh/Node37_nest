@@ -1,21 +1,24 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [],
+  imports: [UserModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  // constructor(){} // Nhận giá trị từ bên ngoài  
+  
+}
+// constructor(){} // Nhận giá trị từ bên ngoài  
   // // Thuộc tính => Properties
   // private id = 0;
   // // Phương thức => Method
   // // Từ khoá dẫn xuất
   // public func = () => {}
   // protected a = ""
-}
 
 // Đối tượng
 
