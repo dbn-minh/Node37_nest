@@ -12,7 +12,10 @@ async function bootstrap() {
   app.use(express.static('.'));
 
   // Dùng swagger load hết API
-  const config = new DocumentBuilder().setTitle('Node 37').build();
+  const config = new DocumentBuilder()
+    .setTitle('Node 37')
+    .addBearerAuth()
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/swagger', app, document);
 

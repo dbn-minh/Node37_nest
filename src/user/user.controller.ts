@@ -9,6 +9,8 @@ import {
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -18,9 +20,12 @@ import { users } from '@prisma/client';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { uploadDto } from './dto/uploadDto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
-@ApiTags('user')
+@ApiTags('user') // đặt tên nhóm api hiển thị trong Swagger
 @Controller('user')
 export class UserController {
   constructor(
@@ -28,6 +33,10 @@ export class UserController {
     private configService: ConfigService,
   ) {}
 
+  @ApiConsumes('multipart/form-data') // tạo nút chọn file trên swagger
+  @ApiBody({
+    type: uploadDto, // đặt type cho body nếu muốn dùng request
+  })
   @UseInterceptors(
     // chạy middleware
     FilesInterceptor('avatar', 10, {
@@ -45,9 +54,13 @@ export class UserController {
     return file;
   }
 
+  // hai thằng dưới này luôn đi chung với nhau
+  @ApiBearerAuth() // định nghĩa khoá ở ngoài swagger
+  @UseGuards(AuthGuard('jwt')) // khoá API những cái nó nằm trên
   @Get()
-  findAll(): Promise<users[]> {
+  findAll(@Req() req: Request): Promise<users[]> {
     // viết theo typeScript thì thêm Promise
+    let data = req.user; // Khoá hệ thống nhiều chức năng
     return this.userService.findAll();
   }
 

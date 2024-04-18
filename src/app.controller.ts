@@ -1,12 +1,20 @@
 import { Body, Controller, Get, Param, Query, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiParam,
+  ApiProperty,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 
-type DemoBody = {
+class DemoBody {
+  @ApiProperty()
   ma2: string;
+  @ApiProperty()
   hoTen2: string;
-};
+}
 
 @ApiTags('app')
 @Controller('/app') //endpoint dành cho cấp đối tượng
@@ -19,16 +27,25 @@ export class AppController {
   }
 
   // trùng endpoint thì load thằng đầu tiên
-
+  // @ApiBody({
+  //   type: DemoBody,
+  // })
+  // @ApiQuery({
+  //   name: 'id',
+  // })
+  // @ApiParam({
+  //   name: 'email',
+  // })
   @Get('/demo/:email/:phone')
   getDemo(
     @Req() req: Request,
 
-    // Nên sài cách dưới này
+    // Nên sài cách dưới này để khai báo
     @Query('id') id2: string,
     @Query('uName') uName2: string,
     @Param('email') email2: string,
     @Param('phone') phone2: string,
+
     @Body() body: DemoBody,
   ) {
     // request
@@ -43,7 +60,7 @@ export class AppController {
     let { ma2, hoTen2 } = body;
 
     // response
-    return { id2, uName2, email2, phone2, ma2, hoTen2 };
+    return '';
   }
 
   @Get('/tinh-tong/:soA/:soB')
