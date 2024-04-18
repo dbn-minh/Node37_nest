@@ -1,12 +1,14 @@
 import { Body, Controller, Get, Param, Query, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 
 type DemoBody = {
   ma2: string;
   hoTen2: string;
 };
 
+@ApiTags('app')
 @Controller('/app') //endpoint dành cho cấp đối tượng
 export class AppController {
   constructor(private readonly appService: AppService) {}

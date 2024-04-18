@@ -1,15 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaClient, users } from '@prisma/client';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  prisma = new PrismaClient();
+
+  async findAll(): Promise<users[]> {
+    // viết theo typeScript thì thêm Promise
+    let data = await this.prisma.users.findMany(); // ko có await vẫn chạy được nha
+    return data;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findName(uName) {
+    let data = await this.prisma.users.findMany({
+      where: {
+        full_name: {
+          contains: uName,
+        },
+      },
+    });
+    return data;
+  }
+
+  create(createUserDto: CreateUserDto) {
+    return 'This action adds a new user';
   }
 
   findOne(id: number) {
